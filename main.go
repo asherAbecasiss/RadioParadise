@@ -13,7 +13,7 @@ func main() {
 
 	myFigure := figure.NewColorFigure("Radio Paradise.", "", "green", true)
 	myFigure.Print()
-	s := spinner.New(spinner.CharSets[39], 1*time.Second)
+	s := spinner.New(spinner.CharSets[39], 300*time.Millisecond)
 	s.Prefix = "\nstream-uk1.radioparadise.com: "
 	s.Start()
 
