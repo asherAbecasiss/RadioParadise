@@ -10,5 +10,5 @@
 ### Build and Run
 ```
 go build .
-go run.
+go run .
 ```
