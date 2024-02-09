@@ -13,7 +13,6 @@ import (
 	"github.com/common-nighthawk/go-figure"
 )
 
-
 const version = "v0.1.0"
 
 type numaa [][]string
@@ -68,13 +67,11 @@ func Play() {
 
 func main() {
 
-
 	myFigure := figure.NewColorFigure("Radio Paradise.", "", "green", true)
 	myFigure.Print()
 	s := spinner.New(spinner.CharSets[39], 1*time.Second)
 	s.Prefix = "\nstream-uk1.radioparadise.com: "
 	s.Start()
-
 
 	if err := vlc.Init("--no-video", "--quiet"); err != nil {
 		log.Fatal(err)
@@ -97,7 +94,6 @@ func main() {
 	}
 	defer media.Release()
 
-
 	manager, err := player.EventManager()
 	if err != nil {
 		log.Fatal(err)
@@ -109,25 +105,24 @@ func main() {
 			case <-quitClock:
 				return
 			default:
-				v := flag.Bool("version", false, "Show version")
-				ns := flag.Bool("nosec", false, "Not print second on the clock")
-				t := flag.String("timezone", "", "Specify timezone \nEx) Asia/Tokyo")
+				v := false
+				ns := false
+				t := ""
 				flag.Parse()
 
-				if *v {
+				if v {
 					fmt.Printf("%s %s\n", os.Args[0], version)
 					os.Exit(0)
 				}
 
-				if *t != "" {
-					tz, err := time.LoadLocation(*t)
+				if t != "" {
+					tz, err := time.LoadLocation(t)
 					if err != nil {
 						log.Fatal(err)
 					}
 					time.Local = tz
 				}
 
-			
 				for {
 					now := time.Now()
 					h1 := NewNumaa(now.Hour() / 10)
@@ -136,7 +131,7 @@ func main() {
 					m2 := NewNumaa(now.Minute() % 10)
 					colon := NewNumaa(10) // colon
 					h1.merge(h2).merge(colon).merge(m1).merge(m2)
-					if !*ns {
+					if !ns {
 						s1 := NewNumaa(now.Second() / 10)
 						s2 := NewNumaa(now.Second() % 10)
 						h1.merge(colon).merge(s1).merge(s2)
@@ -145,12 +140,10 @@ func main() {
 
 					time.Sleep(time.Second)
 
-
 				}
 			}
 		}
 	}()
-
 
 	quit := make(chan struct{})
 	eventCallback := func(event vlc.Event, userData interface{}) {
